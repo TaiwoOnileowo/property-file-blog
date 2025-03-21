@@ -5,8 +5,6 @@ import Head from 'next/head';
 import { Container } from '../../components/container';
 import { AppProvider } from '../../components/contexts/appContext';
 import { CoverImage } from '../../components/cover-image';
-import { Footer } from '../../components/footer';
-import { Header } from '../../components/header';
 import { Layout } from '../../components/layout';
 import { MorePosts } from '../../components/more-posts';
 import {
@@ -34,7 +32,6 @@ export default function Post({ series, publication, posts }: Props) {
 				<Head>
 					<title>{title}</title>
 				</Head>
-				<Header />
 				<Container className="flex flex-col items-stretch gap-10 px-5 pb-10">
 					<div
 						className={`${
@@ -72,7 +69,6 @@ export default function Post({ series, publication, posts }: Props) {
 						<div>No Posts found</div>
 					)}
 				</Container>
-				<Footer />
 			</Layout>
 		</AppProvider>
 	);

@@ -1,6 +1,8 @@
 import { Analytics } from './analytics';
+import Footer from './Footer';
 import { Integrations } from './integrations';
 import { Meta } from './meta';
+import Navbar from './Navbar';
 import { Scripts } from './scripts';
 
 type Props = {
@@ -12,8 +14,10 @@ export const Layout = ({ children }: Props) => {
 		<>
 			<Meta />
 			<Scripts />
-			<div className="min-h-screen bg-white dark:bg-neutral-950">
+			<div className="min-h-screen bg-[linear-gradient(to_bottom,#fff,#f1fff1)] ">
+				<Navbar />
 				<main>{children}</main>
+				<Footer />
 			</div>
 			<Analytics />
 			<Integrations />
