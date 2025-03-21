@@ -7,7 +7,7 @@ import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import Rounded from '../ui/Rounded/RoundedButton';
 import Nav from './nav/index';
 import styles from './style.module.scss';
-export default function index() {
+export default function Index() {
 	const header = useRef(null);
 	const [isActive, setIsActive] = useState(false);
 	const pathname = usePathname();
