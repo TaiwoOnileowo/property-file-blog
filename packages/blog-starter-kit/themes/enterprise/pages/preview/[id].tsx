@@ -4,8 +4,6 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { Container } from '../../components/container';
 import { AppProvider } from '../../components/contexts/appContext';
-import { Footer } from '../../components/footer';
-import { Header } from '../../components/header';
 import { Layout } from '../../components/layout';
 import { MarkdownToHtml } from '../../components/markdown-to-html';
 import { PostHeader } from '../../components/post-header';
@@ -25,7 +23,7 @@ type Props = {
 	publication: Publication;
 };
 
-export default function Post({ publication, post }: Props) {
+export default function PostItem({ publication, post }: Props) {
 	if (!post) {
 		return <ErrorPage statusCode={404} />;
 	}
@@ -37,7 +35,7 @@ export default function Post({ publication, post }: Props) {
 		<li key={tag.id}>
 			<Link
 				href={`/tag/${tag.slug}`}
-				className="block rounded-full border px-2 py-1 font-medium hover:bg-slate-50 dark:border-neutral-800 dark:hover:bg-neutral-800 md:px-4"
+				className="block rounded-full border px-2 py-1 font-medium hover:bg-slate-50 md:px-4 dark:border-neutral-800 dark:hover:bg-neutral-800"
 			>
 				#{tag.slug}
 			</Link>
@@ -47,7 +45,6 @@ export default function Post({ publication, post }: Props) {
 	return (
 		<AppProvider publication={publication}>
 			<Layout>
-				<Header />
 				<Container className="pt-10">
 					<article className="flex flex-col items-start gap-10 pb-10">
 						<Head>
@@ -63,12 +60,11 @@ export default function Post({ publication, post }: Props) {
 							readTimeInMinutes={post.readTimeInMinutes}
 						/>
 						<MarkdownToHtml contentMarkdown={post.content.markdown} />
-						<div className="mx-auto w-full px-5 text-slate-600 dark:text-neutral-300 md:max-w-screen-md">
+						<div className="mx-auto w-full px-5 text-slate-600 md:max-w-screen-md dark:text-neutral-300">
 							<ul className="flex flex-row flex-wrap items-center gap-2">{tagsList}</ul>
 						</div>
 					</article>
 				</Container>
-				<Footer />
 			</Layout>
 		</AppProvider>
 	);

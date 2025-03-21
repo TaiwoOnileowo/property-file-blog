@@ -7,8 +7,6 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { Container } from '../components/container';
 import { AppProvider } from '../components/contexts/appContext';
-import { Footer } from '../components/footer';
-import { Header } from '../components/header';
 import { Layout } from '../components/layout';
 import { MarkdownToHtml } from '../components/markdown-to-html';
 import { PostHeader } from '../components/post-header';
@@ -57,7 +55,7 @@ const Post = ({ publication, post }: PostProps) => {
 		<li key={tag.id}>
 			<Link
 				href={`/tag/${tag.slug}`}
-				className="block rounded-full border px-2 py-1 font-medium hover:bg-slate-50 dark:border-neutral-800 dark:hover:bg-neutral-800 md:px-4"
+				className="block rounded-full border px-2 py-1 font-medium hover:bg-slate-50 md:px-4 dark:border-neutral-800 dark:hover:bg-neutral-800"
 			>
 				#{tag.slug}
 			</Link>
@@ -133,14 +131,15 @@ const Post = ({ publication, post }: PostProps) => {
 				author={post.author}
 				readTimeInMinutes={post.readTimeInMinutes}
 			/>
-			{post.features.tableOfContents.isEnabled && post.features?.tableOfContents?.items?.length > 0 && <PostTOC />}
+			{post.features.tableOfContents.isEnabled &&
+				post.features?.tableOfContents?.items?.length > 0 && <PostTOC />}
 			<MarkdownToHtml contentMarkdown={post.content.markdown} />
 			{(post.tags ?? []).length > 0 && (
-				<div className="mx-auto w-full px-5 text-slate-600 dark:text-neutral-300 md:max-w-screen-md">
+				<div className="mx-auto w-full px-5 text-slate-600 md:max-w-screen-md dark:text-neutral-300">
 					<ul className="flex flex-row flex-wrap items-center gap-2">{tagsList}</ul>
 				</div>
 			)}
-			<AboutAuthor />
+			{/* <AboutAuthor /> */}
 			{!post.preferences.disableComments && post.comments.totalDocuments > 0 && <PostComments />}
 			<Subscribe />
 		</>
@@ -167,14 +166,12 @@ export default function PostOrPage(props: Props) {
 	return (
 		<AppProvider publication={publication} post={maybePost} page={maybePage}>
 			<Layout>
-				<Header />
-				<Container className="pt-10">
+				<Container className="max-w-6xl pt-10 ">
 					<article className="flex flex-col items-start gap-10 pb-10">
 						{props.type === 'post' && <Post {...props} />}
 						{props.type === 'page' && <Page {...props} />}
 					</article>
 				</Container>
-				<Footer />
 			</Layout>
 		</AppProvider>
 	);

@@ -1,15 +1,12 @@
 import { resizeImage } from '@starter-kit/utils/image';
+import { useState } from 'react';
 import { PostFullFragment, User } from '../generated/graphql';
-import { Avatar } from './avatar';
+import CoAuthorsModal from './co-authors-modal';
+import { useAppContext } from './contexts/appContext';
 import { CoverImage } from './cover-image';
 import { DateFormatter } from './date-formatter';
-import CoAuthorsModal from './co-authors-modal';
 import { ReadTimeInMinutes } from './post-read-time-in-minutes';
 import { PostTitle } from './post-title';
-import { useAppContext } from './contexts/appContext';
-import { twJoin } from 'tailwind-merge';
-import { useState } from 'react';
-import ProfileImage from './profile-image';
 
 type Author = Pick<User, 'username' | 'name' | 'profilePicture'>;
 
@@ -23,7 +20,7 @@ type Props = {
 
 export const PostHeader = ({ title, coverImage, date, author, readTimeInMinutes }: Props) => {
 	const { post: _post } = useAppContext();
-  	const post = _post as unknown as PostFullFragment;
+	const post = _post as unknown as PostFullFragment;
 	const authorsArray = [post.author, ...(post.coAuthors || [])];
 	const [isCoAuthorModalVisible, setIsCoAuthorModalVisible] = useState(false);
 	const closeCoAuthorModal = () => {
@@ -35,8 +32,8 @@ export const PostHeader = ({ title, coverImage, date, author, readTimeInMinutes 
 	return (
 		<>
 			<PostTitle>{title}</PostTitle>
-			<div className="flex flex-row flex-wrap items-center justify-center w-full gap-2 px-2 text-slate-700 dark:text-neutral-300 md:px-0">
-				<div className="mb-5 flex w-full flex-row items-center justify-center md:mb-0 md:w-auto md:justify-start">
+			<div className="flex w-full flex-row flex-wrap items-center justify-center gap-2 px-2 text-slate-700 md:px-0 dark:text-neutral-300">
+				{/* <div className="mb-5 flex w-full flex-row items-center justify-center md:mb-0 md:w-auto md:justify-start">
 					{authorsArray.map((coAuthor, index) => (
 						<div
 						key={coAuthor.id?.toString()}
@@ -84,9 +81,9 @@ export const PostHeader = ({ title, coverImage, date, author, readTimeInMinutes 
 						)}
 						</button>
 					)}
-				</div>
+				</div> */}
 				<div className="mb-5 flex w-full flex-row items-center justify-center md:mb-0 md:w-auto md:justify-start">
-					<span className="mx-3 hidden font-bold text-slate-500 md:block">&middot;</span>
+					{/* <span className="mx-3 hidden font-bold text-slate-500 md:block">&middot;</span> */}
 					<DateFormatter dateString={date} />
 					{readTimeInMinutes && <span className="mx-3 font-bold text-slate-500">&middot;</span>}
 					<ReadTimeInMinutes readTimeInMinutes={readTimeInMinutes} />
@@ -101,9 +98,7 @@ export const PostHeader = ({ title, coverImage, date, author, readTimeInMinutes 
 					/>
 				</div>
 			)}
-			{isCoAuthorModalVisible && (
-				<CoAuthorsModal closeModal={closeCoAuthorModal} />
-			)}
+			{isCoAuthorModalVisible && <CoAuthorsModal closeModal={closeCoAuthorModal} />}
 		</>
 	);
 };

@@ -40,7 +40,7 @@ const Toc = ({
 				<li key={item.id}>
 					<a
 						href={`#heading-${item.slug}`}
-						className="hover:text-primary-600 hover:bg-primary-50 dark:hover:text-primary-500 underline dark:hover:bg-neutral-800"
+						className="hover:text-primary hover:bg-primary-50 dark:hover:text-primary-500 underline dark:hover:bg-neutral-800"
 					>
 						{item.title}
 					</a>
@@ -59,7 +59,7 @@ export const PostTOC = () => {
 
 	return (
 		<div className="w-full px-5">
-			<div className="mx-auto w-full max-w-screen-md rounded-lg border border-b-4 border-r-4 p-5 text-base leading-snug dark:border-neutral-800 dark:text-neutral-50 md:p-8 md:text-lg">
+			<div className="mx-auto w-full max-w-screen-md rounded-lg border border-b-4 border-r-4 p-5 text-base leading-snug md:p-8 md:text-lg dark:border-neutral-800 dark:text-neutral-50">
 				<h2 className="mb-5 text-lg font-bold md:text-xl">Table of contents</h2>
 				<Toc parentId={null} data={mapTableOfContentItems(post.features.tableOfContents.items)} />
 			</div>
