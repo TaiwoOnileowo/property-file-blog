@@ -2,7 +2,7 @@ import { Analytics } from './analytics';
 import Footer from './Footer';
 import { Integrations } from './integrations';
 import { Meta } from './meta';
-import Navbar from './Navbar';
+import Navbar from './navbar';
 import { Scripts } from './scripts';
 
 type Props = {
