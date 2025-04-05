@@ -15,7 +15,7 @@ export const truncateText = (text: string, length: number, slug: string) => {
 		<>
 			{text.slice(0, length)}...
 			<br />
-			<Link href={`/blog/${slug}`} className="readmore text-sm hover:underline">
+			<Link href={`/blog/${slug}`} className="readmore text-xs hover:underline">
 				Read More
 			</Link>
 		</>

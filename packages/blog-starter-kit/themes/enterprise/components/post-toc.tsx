@@ -40,7 +40,7 @@ const Toc = ({
 				<li key={item.id}>
 					<a
 						href={`#heading-${item.slug}`}
-						className="hover:text-primary hover:bg-primary-50 dark:hover:text-primary-500 underline dark:hover:bg-neutral-800"
+						className="hover:text-primary hover:bg-primary dark:hover:text-primary underline dark:hover:bg-neutral-800"
 					>
 						{item.title}
 					</a>

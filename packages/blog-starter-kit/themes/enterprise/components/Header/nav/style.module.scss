@@ -1,6 +1,6 @@
 .menu {
 	height: 100vh;
-	background-color: rgb(46, 45, 45);
+	background-color: rgb(13, 13, 13);
 	position: fixed;
 	left: 0;
 	top: 0;
@@ -9,7 +9,7 @@
 	.body {
 		box-sizing: border-box;
 		height: 100%;
-		padding: 100px;
+		padding: 50px 100px;
 		display: flex;
 		flex-direction: column;
 		justify-content: space-between;

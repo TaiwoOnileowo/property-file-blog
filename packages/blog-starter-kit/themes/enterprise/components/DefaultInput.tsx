@@ -18,7 +18,7 @@ const DefaultInput = forwardRef<
 				type={type}
 				placeholder={placeholder}
 				className={cn(
-					'focus:outline-default dark:focus:outline-primary-500 left-3 top-3 w-full rounded-md bg-transparent p-2 text-base text-black outline-none dark:bg-neutral-950 dark:text-neutral-50',
+					'focus:outline-default left-3 top-3 w-full rounded-md bg-transparent p-2 text-base text-black outline-none dark:bg-neutral-950 dark:text-neutral-50 dark:focus:outline-blue-500',
 				)}
 			/>
 			<button

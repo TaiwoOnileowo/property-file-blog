@@ -1,3 +1,4 @@
+import SocialIcons from '@/components/Footer/SocialIcons';
 import { navItems } from '@/lib/data';
 import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
@@ -42,9 +43,9 @@ export default function Index({
 					})}
 				</div>
 				{/* <Footer /> */}
-				<div className="flex flex-col items-center">
+				<div className="flex flex-col w-fit  gap-4">
 					<Image src={'/logo.svg'} alt="logo" width={150} height={150} />
-					<p className="mt-2 text-sm ">Land of homes</p>
+					<SocialIcons />
 				</div>
 			</div>
 			<Curve />

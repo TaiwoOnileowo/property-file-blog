@@ -17,7 +17,7 @@ export default function CategoryPostsGrid({ posts, seriesTitle }: CategoryPostsG
 
 	return (
 		<section className="mb-16">
-			<h2 className="mb-6 text-2xl font-bold">{seriesTitle.toUpperCase()}</h2>
+			<h2 className="font-heliosBold mb-6 text-2xl font-bold">{seriesTitle.toUpperCase()}</h2>
 
 			<div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
 				{/* Featured post - spans 2 columns */}
@@ -35,14 +35,16 @@ export default function CategoryPostsGrid({ posts, seriesTitle }: CategoryPostsG
 						/>
 						<div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent max-md:hidden" />
 						<div className="absolute bottom-0 left-0 right-0 p-6 text-white max-md:hidden">
-							<h3 className="text-xl font-bold  md:text-2xl">{featuredPost.title}</h3>
+							<h3 className="font-heliosBold text-xl  font-bold md:text-2xl">
+								{featuredPost.title}
+							</h3>
 							<p className="mt-2 max-w-fit break-words text-xs text-white/80">
 								{truncateText(featuredPost.brief, 150, featuredPost.slug)}
 							</p>
 						</div>
 					</Link>
 					<div className="mt-4 md:hidden ">
-						<h3 className="text-xl font-bold  md:text-2xl">{featuredPost.title}</h3>
+						<h3 className="font-heliosBold text-xl  font-bold md:text-2xl">{featuredPost.title}</h3>
 						<p className="mt-2 break-words text-xs text-black/80">
 							{truncateText(featuredPost.brief, 150, featuredPost.slug)}
 						</p>
@@ -67,8 +69,8 @@ export default function CategoryPostsGrid({ posts, seriesTitle }: CategoryPostsG
 							/>
 						</Link>
 						<div className="col-span-8">
-							<h3 className="font-bold">
-								<Link href={`/${post.slug}`} className="transition-colors hover:text-blue-600">
+							<h3 className="font-heliosBold font-bold">
+								<Link href={`/${post.slug}`} className="hover:text-default transition-colors">
 									{post.title}
 								</Link>
 							</h3>
@@ -81,7 +83,7 @@ export default function CategoryPostsGrid({ posts, seriesTitle }: CategoryPostsG
 			</div>
 
 			<div className="mt-8 text-center">
-				<Button variant="default" asChild className="hover:shadow-lg">
+				<Button variant="default" asChild className="text-white transition hover:shadow-lg">
 					<Link href={`/category/${seriesTitle.toLowerCase()}`}>View More From {seriesTitle} </Link>
 				</Button>
 			</div>

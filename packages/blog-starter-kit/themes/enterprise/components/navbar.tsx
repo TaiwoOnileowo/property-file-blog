@@ -6,23 +6,12 @@ import logoMobile from '@/public/logo-mobile.svg';
 import logo from '@/public/logo.svg';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
 import { useMediaQuery } from 'react-responsive';
 import QuickLinks from './QuickLinks';
 
 export default function Navbar() {
-	const [mounted, setMounted] = useState(false);
-	useEffect(() => setMounted(true), []);
-
-	// Always call the hook unconditionally
 	const mobileQuery = useMediaQuery({ query: '(max-width: 768px)' });
-	// Only use the value after component has mounted
-	const isMobile = mounted ? mobileQuery : false;
-
-	if (!mounted) {
-		// Optionally, return a loader or null while mounting
-		return null;
-	}
+	const isMobile = mobileQuery;
 
 	return (
 		<header className="font-helios sticky top-0 z-50 w-full bg-black">
@@ -60,7 +49,7 @@ export default function Navbar() {
 					<div className="flex items-center space-x-4 text-sm text-white">
 						<Button
 							variant="default"
-							className="bg-default/90 hover:bg-default/80 cursor-pointer px-4 font-bold text-black "
+							className="bg-default/90 hover:bg-default cursor-pointer px-4 font-bold  "
 						>
 							Post Property
 						</Button>

@@ -138,10 +138,10 @@ export default function Index({ publication, initialAllPosts, initialPageInfo }:
 					</div>
 
 					{allPosts.length > 0 && (
-						<div className="bg-primary-50 grid grid-cols-4 rounded-lg px-5 py-5 md:py-10 dark:bg-neutral-900">
+						<div className="bg-primary grid grid-cols-4 rounded-lg px-5 py-5 md:py-10 dark:bg-neutral-900">
 							<div className="col-span-full md:col-span-2 md:col-start-2">
 								<h2 className="text-primary dark:text-primary/90 mb-5 text-center text-lg font-semibold">
-									Subscribe to our newsletter for updates and changelog!!!.
+									Subscribe to our newsletter to hear more from us!
 								</h2>
 								<SubscribeForm />
 							</div>

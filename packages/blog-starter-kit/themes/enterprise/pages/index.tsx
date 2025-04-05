@@ -1,6 +1,8 @@
+import AdvertiseBanner from '@/components/AdvertiseBanner';
 import CategoryPostsGrid from '@/components/CategoryPostsGrid';
 import DefaultInput from '@/components/DefaultInput';
 import EmptyBlog from '@/components/EmptyBlog';
+import HorizontalHomeFinder from '@/components/HomeFinderHorizontal';
 import LatestPostsGrid from '@/components/LatestPostsGrid';
 import MetaTags from '@/components/MetaTags';
 import { GET_SERIES_WITH_POSTS } from '@/queries';
@@ -61,25 +63,28 @@ export default function Index({ postSeries, publication }: Props) {
 					</div>
 
 					{/* Category Sections */}
-					{postSeries.map((category) => (
-						<>
-							<CategoryPostsGrid
-								key={category.seriesTitle}
-								posts={category.posts}
-								seriesTitle={category.seriesTitle}
-							/>
-							<div className="mb-16 rounded-lg bg-gray-200 p-4">
-								<div className="flex h-32 items-center justify-center border-2 border-dashed border-gray-400">
-									<span className="font-medium text-gray-500">Advertisement Space</span>
+					{postSeries.map((category, index) => (
+						<div key={category.seriesTitle}>
+							<CategoryPostsGrid posts={category.posts} seriesTitle={category.seriesTitle} />
+
+							{index === 0 ? (
+								<AdvertiseBanner />
+							) : index === 1 ? (
+								<HorizontalHomeFinder />
+							) : (
+								<div className="mb-16 rounded-lg bg-gray-200 p-4">
+									<div className="flex h-32 items-center justify-center border-2 border-dashed border-gray-400">
+										<span className="font-medium text-gray-500">Advertisement Space</span>
+									</div>
 								</div>
-							</div>
-						</>
+							)}
+						</div>
 					))}
 					{postSeries.length > 0 && (
 						<div className="grid grid-cols-4 rounded-lg bg-black px-5 py-5 md:py-10 dark:bg-neutral-900">
 							<div className="col-span-full md:col-span-2 md:col-start-2">
-								<h2 className="mb-5 text-center text-2xl font-bold text-white">
-									Subscribe to our newsletter for updates.
+								<h2 className="font-heliosBold mb-5 text-center text-2xl font-bold text-white">
+									Subscribe to our newsletter to hear more from us!
 								</h2>
 								<SubscribeForm />
 							</div>

@@ -46,11 +46,11 @@ export default function Index() {
 		<>
 			<div className={styles.headerButtonContainer}>
 				<Rounded
-					backgroundColor="#ccff02"
+					backgroundColor="#00bf63"
 					onClick={() => {
 						setIsActive(!isActive);
 					}}
-					className={`${styles.button} text-black`}
+					className={`${styles.button} text-white`}
 				>
 					<div className={`${styles.burger} ${isActive ? styles.burgerActive : ''}`}></div>
 				</Rounded>
