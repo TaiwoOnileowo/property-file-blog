@@ -148,7 +148,7 @@ export default function HorizontalHomeFinder() {
 									max={20000000}
 									step={100000}
 									min={500000}
-									onValueChange={(value) => setPriceRange([0, value[0]])}
+									onValueChange={(value: number[]) => setPriceRange([0, value[0]])}
 								/>
 							</div>
 						</div>
