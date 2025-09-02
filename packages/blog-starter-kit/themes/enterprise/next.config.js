@@ -73,6 +73,12 @@ const config = {
 			},
 		],
 	},
+	...(process.env.NODE_ENV === 'development' && {
+		onDemandEntries: {
+			maxInactiveAge: 0,
+			pagesBufferLength: 0,
+		},
+	}),
 	async rewrites() {
 		return [
 			{

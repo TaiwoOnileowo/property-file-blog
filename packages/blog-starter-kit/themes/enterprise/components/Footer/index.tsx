@@ -9,7 +9,7 @@ const Footer = () => {
 
 	return (
 		<footer className="w-full  bg-black">
-			<FooterMenu />
+			{/* <FooterMenu /> */}
 			<div className="w-full border-t border-t-white/20 px-10 py-6 lg:px-24">
 				<div className="flex items-center justify-between gap-6 max-md:flex-col md:flex-row">
 					<div className="flex gap-4 max-md:flex-col md:flex-row md:items-center md:gap-8">

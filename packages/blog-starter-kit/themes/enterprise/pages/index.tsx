@@ -2,7 +2,6 @@ import AdvertiseBanner from '@/components/AdvertiseBanner';
 import CategoryPostsGrid from '@/components/CategoryPostsGrid';
 import DefaultInput from '@/components/DefaultInput';
 import EmptyBlog from '@/components/EmptyBlog';
-import HorizontalHomeFinder from '@/components/HomeFinderHorizontal';
 import LatestPostsGrid from '@/components/LatestPostsGrid';
 import MetaTags from '@/components/MetaTags';
 import { GET_SERIES_WITH_POSTS } from '@/queries';
@@ -69,8 +68,6 @@ export default function Index({ postSeries, publication }: Props) {
 
 							{index === 0 ? (
 								<AdvertiseBanner />
-							) : index === 1 ? (
-								<HorizontalHomeFinder />
 							) : (
 								<div className="mb-16 rounded-lg bg-gray-200 p-4">
 									<div className="flex h-32 items-center justify-center border-2 border-dashed border-gray-400">
@@ -96,44 +93,77 @@ export default function Index({ postSeries, publication }: Props) {
 	);
 }
 export const getStaticProps: GetStaticProps = async () => {
-	const categoriesData = await request<PostsByPublicationQuery>(
-		process.env.NEXT_PUBLIC_HASHNODE_GQL_ENDPOINT!,
-		GET_SERIES_WITH_POSTS,
-		{
-			host: process.env.NEXT_PUBLIC_HASHNODE_PUBLICATION_HOST,
-			seriesFirst: 3,
-			postsFirst: 5,
-		},
-	);
-	const data = await request<PostsByPublicationQuery, PostsByPublicationQueryVariables>(
-		GQL_ENDPOINT,
-		PostsByPublicationDocument,
-		{
-			first: 10,
-			host: process.env.NEXT_PUBLIC_HASHNODE_PUBLICATION_HOST,
-		},
-	);
+	try {
+		// Get series with posts
+		const categoriesData = await request<PostsByPublicationQuery>(
+			process.env.NEXT_PUBLIC_HASHNODE_GQL_ENDPOINT!,
+			GET_SERIES_WITH_POSTS,
+			{
+				host: process.env.NEXT_PUBLIC_HASHNODE_PUBLICATION_HOST,
+				seriesFirst: 3,
+				postsFirst: 5,
+			},
+		);
 
-	const publication = data.publication;
+		// Get all posts
+		const data = await request<PostsByPublicationQuery, PostsByPublicationQueryVariables>(
+			process.env.NEXT_PUBLIC_HASHNODE_GQL_ENDPOINT!,
+			PostsByPublicationDocument,
+			{
+				first: 20,
+				host: process.env.NEXT_PUBLIC_HASHNODE_PUBLICATION_HOST,
+			},
+		);
 
-	const categoriesPublication = categoriesData.publication as any;
-	if (!publication || !categoriesPublication) {
+		// // Get series names for navigation
+		// const seriesNamesData = await request<PostsByPublicationQuery>(
+		// 	process.env.NEXT_PUBLIC_HASHNODE_GQL_ENDPOINT!,
+		// 	GET_SERIES_NAMES,
+		// 	{
+		// 		host: process.env.NEXT_PUBLIC_HASHNODE_PUBLICATION_HOST,
+		// 		seriesFirst: 4,
+		// 	},
+		// );
+
+		const publication = data.publication;
+		const categoriesPublication = categoriesData.publication as any;
+		// const seriesPublication = seriesNamesData.publication as any;
+
+		if (!publication || !categoriesPublication) {
+			return {
+				notFound: true,
+			};
+		}
+
+		// Map through seriesList to simplify data consumption
+		const postSeries = categoriesPublication.seriesList.edges.map((edge: any) => ({
+			seriesTitle: edge.node.name,
+			seriesSlug: edge.node.slug,
+			posts: edge.node.posts.edges.map((postEdge: any) => postEdge.node),
+		}));
+
+		// Extract series names for navigation
+		// const seriesNames =
+		// 	seriesPublication?.seriesList?.edges?.map((edge: any) => ({
+		// 		seriesTitle: edge.node.name,
+		// 		seriesSlug: edge.node.slug,
+		// 	})) || [];
+
+		// console.log('Series names:', seriesNames);
+		console.log('Post series:', postSeries);
+
+		return {
+			props: {
+				publication,
+				postSeries,
+				// seriesNames, // Add this new prop
+			},
+			revalidate: 60, // 1 minute revalidation
+		};
+	} catch (error) {
+		console.error('Error in getStaticProps:', error);
 		return {
 			notFound: true,
 		};
 	}
-
-	// Map through seriesList to simplify data consumption:
-	const postSeries = categoriesPublication.seriesList.edges.map((edge: any) => ({
-		seriesTitle: edge.node.name,
-		seriesSlug: edge.node.slug,
-		posts: edge.node.posts.edges.map((postEdge: any) => postEdge.node),
-	}));
-	return {
-		props: {
-			publication,
-			postSeries,
-		},
-		revalidate: 1,
-	};
 };
