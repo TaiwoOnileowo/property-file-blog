@@ -3,7 +3,6 @@ import { truncateText } from '@/utils';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useMediaQuery } from 'react-responsive';
-import HomeFinderWidget from './HomeFinderWidget';
 
 interface LatestPostsGridProps {
 	posts: PostFragment[];
@@ -82,9 +81,9 @@ export default function LatestPostsGrid({ posts }: LatestPostsGridProps) {
 				</div>
 
 				{/* First Ad Space */}
-				<div className="col-span-12 flex h-24  items-center justify-center rounded-lg bg-gray-200  md:col-span-3 md:h-full">
+				{/* <div className="col-span-12 flex h-24  items-center justify-center rounded-lg bg-gray-200  md:col-span-3 md:h-full">
 					<span className="font-medium text-gray-500">AD</span>
-				</div>
+				</div> */}
 
 				{/* Bottom row - 3 posts and 1 ad space */}
 				{restPosts.map((post, index) => (
@@ -114,9 +113,9 @@ export default function LatestPostsGrid({ posts }: LatestPostsGridProps) {
 				))}
 
 				{/* Find your dream home widget */}
-				<div className="col-span-12 md:col-span-3">
+				{/* <div className="col-span-12 md:col-span-3">
 					<HomeFinderWidget />
-				</div>
+				</div> */}
 			</div>
 		</section>
 	);

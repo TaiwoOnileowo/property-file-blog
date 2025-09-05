@@ -1,10 +1,10 @@
-import AdvertiseBanner from '@/components/AdvertiseBanner';
 import CategoryPostsGrid from '@/components/CategoryPostsGrid';
 import DefaultInput from '@/components/DefaultInput';
 import EmptyBlog from '@/components/EmptyBlog';
 import LatestPostsGrid from '@/components/LatestPostsGrid';
 import MetaTags from '@/components/MetaTags';
-import { GET_SERIES_WITH_POSTS } from '@/queries';
+import QuickLinks from '@/components/QuickLinks';
+import { GET_SERIES_NAMES, GET_SERIES_WITH_POSTS } from '@/queries';
 import { PostSeries } from '@/types';
 import { getLatestPosts } from '@/utils';
 import request from 'graphql-request';
@@ -26,17 +26,32 @@ const SubscribeForm = dynamic(() =>
 );
 
 type Props = {
-	publication: PublicationFragment;
+	publication: PublicationFragment | null;
 	postSeries: PostSeries[];
+	seriesNames: { seriesTitle: string; seriesSlug: string }[];
 };
 
-const GQL_ENDPOINT = process.env.NEXT_PUBLIC_HASHNODE_GQL_ENDPOINT!;
-export default function Index({ postSeries, publication }: Props) {
+export default function Index({ postSeries, publication, seriesNames }: Props) {
 	const latestPosts = getLatestPosts(postSeries, 6);
-	console.log(latestPosts, 'latestPosts');
+
+	// Handle case when publication is null
+	if (!publication) {
+		return (
+			<Layout>
+				<Container className="mx-auto flex max-w-7xl flex-col items-stretch gap-10 px-5 pb-10">
+					<div className="py-20 text-center">
+						<h1 className="text-2xl font-bold text-gray-900">Loading...</h1>
+						<p className="text-gray-600">Please wait while we load the latest content.</p>
+					</div>
+				</Container>
+			</Layout>
+		);
+	}
+
 	return (
 		<AppProvider publication={publication}>
 			<Layout>
+				<QuickLinks seriesNames={seriesNames} postSeries={postSeries} />
 				<Head>
 					<MetaTags publication={publication} />
 				</Head>
@@ -55,18 +70,18 @@ export default function Index({ postSeries, publication }: Props) {
 					<LatestPostsGrid posts={latestPosts} />
 
 					{/* Rectangle Ad Banner */}
-					<div className="mb-16 rounded-lg bg-gray-200 p-4">
+					{/* <div className="mb-16 rounded-lg bg-gray-200 p-4">
 						<div className="flex h-32 items-center justify-center border-2 border-dashed border-gray-400">
 							<span className="font-medium text-gray-500">Advertisement Space</span>
 						</div>
-					</div>
+					</div> */}
 
 					{/* Category Sections */}
 					{postSeries.map((category, index) => (
 						<div key={category.seriesTitle}>
 							<CategoryPostsGrid posts={category.posts} seriesTitle={category.seriesTitle} />
 
-							{index === 0 ? (
+							{/* {index === 0 ? (
 								<AdvertiseBanner />
 							) : (
 								<div className="mb-16 rounded-lg bg-gray-200 p-4">
@@ -74,11 +89,11 @@ export default function Index({ postSeries, publication }: Props) {
 										<span className="font-medium text-gray-500">Advertisement Space</span>
 									</div>
 								</div>
-							)}
+							)} */}
 						</div>
 					))}
 					{postSeries.length > 0 && (
-						<div className="grid grid-cols-4 rounded-lg bg-black px-5 py-5 md:py-10 dark:bg-neutral-900">
+						<div className="grid grid-cols-4 rounded-lg bg-black px-5 py-5  dark:bg-neutral-900">
 							<div className="col-span-full md:col-span-2 md:col-start-2">
 								<h2 className="font-heliosBold mb-5 text-center text-2xl font-bold text-white">
 									Subscribe to our newsletter to hear more from us!
@@ -94,14 +109,19 @@ export default function Index({ postSeries, publication }: Props) {
 }
 export const getStaticProps: GetStaticProps = async () => {
 	try {
+		console.log('Fetching data at:', new Date().toISOString());
+
 		// Get series with posts
-		const categoriesData = await request<PostsByPublicationQuery>(
+		const categoriesData = await request<any>(
 			process.env.NEXT_PUBLIC_HASHNODE_GQL_ENDPOINT!,
 			GET_SERIES_WITH_POSTS,
 			{
 				host: process.env.NEXT_PUBLIC_HASHNODE_PUBLICATION_HOST,
-				seriesFirst: 3,
-				postsFirst: 5,
+				seriesFirst: 10,
+				postsFirst: 6,
+			},
+			{
+				'Cache-Control': 'no-cache',
 			},
 		);
 
@@ -113,57 +133,75 @@ export const getStaticProps: GetStaticProps = async () => {
 				first: 20,
 				host: process.env.NEXT_PUBLIC_HASHNODE_PUBLICATION_HOST,
 			},
+			{
+				'Cache-Control': 'no-cache',
+			},
 		);
 
-		// // Get series names for navigation
-		// const seriesNamesData = await request<PostsByPublicationQuery>(
-		// 	process.env.NEXT_PUBLIC_HASHNODE_GQL_ENDPOINT!,
-		// 	GET_SERIES_NAMES,
-		// 	{
-		// 		host: process.env.NEXT_PUBLIC_HASHNODE_PUBLICATION_HOST,
-		// 		seriesFirst: 4,
-		// 	},
-		// );
+		// Get series names for navigation
+		const seriesNamesData = await request<any>(
+			process.env.NEXT_PUBLIC_HASHNODE_GQL_ENDPOINT!,
+			GET_SERIES_NAMES,
+			{
+				host: process.env.NEXT_PUBLIC_HASHNODE_PUBLICATION_HOST,
+				seriesFirst: 10,
+			},
+			{
+				'Cache-Control': 'no-cache',
+			},
+		);
 
 		const publication = data.publication;
-		const categoriesPublication = categoriesData.publication as any;
-		// const seriesPublication = seriesNamesData.publication as any;
+		const categoriesPublication = categoriesData.publication;
+		const seriesPublication = seriesNamesData.publication;
 
-		if (!publication || !categoriesPublication) {
+		// console.log('Raw categoriesData:', JSON.stringify(categoriesData, null, 2));
+		// console.log('Raw seriesNamesData:', JSON.stringify(seriesNamesData, null, 2));
+
+		if (!publication) {
+			console.error('No publication found');
 			return {
 				notFound: true,
 			};
 		}
 
 		// Map through seriesList to simplify data consumption
-		const postSeries = categoriesPublication.seriesList.edges.map((edge: any) => ({
-			seriesTitle: edge.node.name,
-			seriesSlug: edge.node.slug,
-			posts: edge.node.posts.edges.map((postEdge: any) => postEdge.node),
-		}));
+		const postSeries =
+			categoriesPublication?.seriesList?.edges?.map((edge: any) => ({
+				seriesTitle: edge.node.name,
+				seriesSlug: edge.node.slug,
+				posts: edge.node.posts?.edges?.map((postEdge: any) => postEdge.node) || [],
+			})) || [];
 
 		// Extract series names for navigation
-		// const seriesNames =
-		// 	seriesPublication?.seriesList?.edges?.map((edge: any) => ({
-		// 		seriesTitle: edge.node.name,
-		// 		seriesSlug: edge.node.slug,
-		// 	})) || [];
+		const seriesNames =
+			seriesPublication?.seriesList?.edges?.map((edge: any) => ({
+				seriesTitle: edge.node.name,
+				seriesSlug: edge.node.slug,
+			})) || [];
 
-		// console.log('Series names:', seriesNames);
-		console.log('Post series:', postSeries);
+		console.log('Processed series names:', seriesNames);
+		console.log('Processed post series:', postSeries);
 
 		return {
 			props: {
 				publication,
 				postSeries,
-				// seriesNames, // Add this new prop
+				seriesNames,
 			},
-			revalidate: 60, // 1 minute revalidation
+			revalidate: 10, // Revalidate every 10 seconds for fresh data
 		};
 	} catch (error) {
 		console.error('Error in getStaticProps:', error);
+
+		// Return empty data instead of notFound to prevent crashes
 		return {
-			notFound: true,
+			props: {
+				publication: null,
+				postSeries: [],
+				seriesNames: [],
+			},
+			revalidate: 60, // Try again in 1 minute
 		};
 	}
 };

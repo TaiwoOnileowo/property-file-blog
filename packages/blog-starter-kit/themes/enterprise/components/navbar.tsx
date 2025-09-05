@@ -4,8 +4,7 @@ import { Button } from '@/components/ui/button';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useMediaQuery } from 'react-responsive';
-import QuickLinks from './QuickLinks';
-
+import Header from './Header';
 export default function Navbar() {
 	const mobileQuery = useMediaQuery({ query: '(max-width: 768px)' });
 	const isMobile = mobileQuery;
@@ -28,9 +27,9 @@ export default function Navbar() {
 						</Link>
 					</div>
 
-					{/* <div className="absolute left-6 top-4 hidden md:block">
+					<div className="absolute left-6 top-4 hidden md:block">
 						<Header />
-					</div> */}
+					</div>
 
 					<Link href="/" className=" hidden flex-1 items-center justify-center lg:flex">
 						<div className="flex items-center gap-1">
@@ -41,15 +40,12 @@ export default function Navbar() {
 					<div className="absolute right-6 top-4 flex items-center space-x-4 text-sm text-white">
 						<Button
 							variant="default"
-							className="bg-default/90 hover:bg-default cursor-pointer px-4 font-bold  "
+							className="cursor-pointer bg-black px-4 font-bold hover:bg-gray-800  "
 						>
 							Advertise
 						</Button>
 					</div>
 				</div>
-
-				{/* Navigation links */}
-				<QuickLinks />
 			</div>
 		</header>
 	);

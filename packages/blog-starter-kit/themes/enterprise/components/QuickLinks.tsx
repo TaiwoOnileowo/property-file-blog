@@ -1,80 +1,81 @@
-import { PostsByPublicationQuery } from '@/generated/graphql';
-import { GET_SERIES_NAMES } from '@/queries';
-import request from 'graphql-request';
-import Link from 'next/link';
-import { useEffect, useState } from 'react';
+'use client';
 
-const QuickLinks = () => {
-	const [seriesNames, setSeriesNames] = useState<{ seriesTitle: string; seriesSlug: string }[]>([]);
-	const [loading, setLoading] = useState(true);
+import { PostFragment } from '@/generated/graphql';
+import { cn } from '@/lib/utils';
+import { PostSeries } from '@/types';
+import { useState } from 'react';
+import { HoveredLink, Menu, MenuItem, ProductItem } from './ui/navbar-menu';
 
-	useEffect(() => {
-		async function fetchSeries() {
-			try {
-				setLoading(true);
+interface QuickLinksProps {
+	seriesNames: { seriesTitle: string; seriesSlug: string }[];
+	postSeries?: PostSeries[];
+}
 
-				// Add cache busting parameter
-				const timestamp = Date.now();
-				const categoriesData = await request<PostsByPublicationQuery>(
-					`${process.env.NEXT_PUBLIC_HASHNODE_GQL_ENDPOINT}?t=${timestamp}`,
-					GET_SERIES_NAMES,
-					{
-						host: process.env.NEXT_PUBLIC_HASHNODE_PUBLICATION_HOST,
-						seriesFirst: 4,
-					},
-					{
-						// Add headers to prevent caching
-						'Cache-Control': 'no-cache, no-store, must-revalidate',
-						Pragma: 'no-cache',
-						Expires: '0',
-					},
-				);
+const QuickLinks = ({ seriesNames, postSeries = [] }: QuickLinksProps) => {
+	const [active, setActive] = useState<string | null>(null);
 
-				const categoriesPublication = categoriesData.publication as any;
-				if (!categoriesPublication) {
-					setSeriesNames([]);
-					return;
-				}
+	const getSeriesPosts = (seriesSlug: string): PostFragment[] => {
+		const series = postSeries.find((s) => s.seriesSlug === seriesSlug);
+		return series?.posts.slice(0, 6) || [];
+	};
 
-				const series = categoriesPublication.seriesList.edges.map((edge: any) => ({
-					seriesTitle: edge.node.name,
-					seriesSlug: edge.node.slug,
-				}));
+	const formatDate = (dateString: string) => {
+		const date = new Date(dateString);
+		return date.toLocaleDateString('en-US', {
+			month: 'short',
+			day: 'numeric',
+			year: 'numeric',
+		});
+	};
 
-				console.log('Fetched series:', series); // Debug log
-				setSeriesNames(series);
-			} catch (error) {
-				console.error('Error fetching series:', error);
-				setSeriesNames([]);
-			} finally {
-				setLoading(false);
-			}
-		}
+	const truncateText = (text: string, maxLength: number = 80) => {
+		if (text.length <= maxLength) return text;
+		return text.slice(0, maxLength) + '...';
+	};
 
-		fetchSeries();
-	}, []);
+	// Filter out series that don't have any posts
+	const seriesWithPosts = seriesNames.filter((series) => {
+		return getSeriesPosts(series.seriesSlug).length > 0;
+	});
 
-	if (loading) {
-		return (
-			<nav className="flex justify-center pb-3">
-				<div className="text-white">Loading...</div>
-			</nav>
-		);
+	if (!seriesWithPosts || seriesWithPosts.length === 0) {
+		return null;
 	}
 
 	return (
-		<nav className="flex justify-center pb-3">
-			<ul className="flex flex-wrap items-center space-x-6 text-black">
-				{seriesNames.length > 0 &&
-					seriesNames.map((series) => (
-						<li key={series.seriesSlug}>
-							<Link href={`/category/${series.seriesSlug}`} className="py-2 hover:underline">
-								{series.seriesTitle}
-							</Link>
-						</li>
+		<div className="relative flex w-full items-center justify-center">
+			<div className={cn('inset-x-0 z-10 mx-auto max-w-7xl')}>
+				<Menu setActive={setActive}>
+					{seriesWithPosts.map((series) => (
+						<MenuItem
+							key={series.seriesSlug}
+							setActive={setActive}
+							active={active}
+							item={series.seriesTitle}
+						>
+							<div className="text-sm">
+								<div className="grid max-w-4xl grid-cols-2 gap-8 overflow-hidden p-10">
+									{getSeriesPosts(series.seriesSlug).map((post) => (
+										<ProductItem
+											key={post.id}
+											title={post.title}
+											href={`/${post.slug}`}
+											src={post.coverImage?.url || '/placeholder.jpg'}
+											description={truncateText(post.brief || '', 80)}
+										/>
+									))}
+								</div>
+								<div className="mt-4 border-t border-gray-200 pt-4 text-center">
+									<HoveredLink href={`/series/${series.seriesSlug}`}>
+										View all posts in {series.seriesTitle} →
+									</HoveredLink>
+								</div>
+							</div>
+						</MenuItem>
 					))}
-			</ul>
-		</nav>
+				</Menu>
+			</div>
+		</div>
 	);
 };
 

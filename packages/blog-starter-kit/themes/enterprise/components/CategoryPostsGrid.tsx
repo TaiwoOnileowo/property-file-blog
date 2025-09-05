@@ -10,13 +10,12 @@ interface CategoryPostsGridProps {
 }
 
 export default function CategoryPostsGrid({ posts, seriesTitle }: CategoryPostsGridProps) {
-	if (!posts || posts.length < 5) return null;
+	if (!posts.length) return null;
 
 	// Get first 5 posts for the category display
 	const [featuredPost, ...gridPosts] = posts.slice(0, 5);
-
 	return (
-		<section className="mb-16">
+		<section className="">
 			<h2 className="font-heliosBold mb-6 text-2xl font-bold">{seriesTitle.toUpperCase()}</h2>
 
 			<div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
@@ -49,11 +48,11 @@ export default function CategoryPostsGrid({ posts, seriesTitle }: CategoryPostsG
 							{truncateText(featuredPost.brief, 150, featuredPost.slug)}
 						</p>
 					</div>
-					<div className="mt-5 rounded-lg bg-gray-200 p-4">
+					{/* <div className="mt-5 rounded-lg bg-gray-200 p-4">
 						<div className="flex h-10 items-center justify-center border-2 border-dashed border-gray-400">
 							<span className="font-medium text-gray-500">Advertisement Space</span>
 						</div>
-					</div>
+					</div> */}
 				</div>
 
 				{/* Grid posts */}
