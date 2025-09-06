@@ -1,6 +1,5 @@
-import SocialIcons from '@/components/Footer/SocialIcons';
-import { navItems } from '@/lib/data';
 import { cn } from '@/lib/utils';
+import { useSeriesStore } from '@/store/seriesStore';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
@@ -16,6 +15,16 @@ export default function Index({
 }) {
 	const pathname = usePathname();
 	const [selectedIndicator, setSelectedIndicator] = useState(pathname);
+	const { seriesNames } = useSeriesStore();
+
+	// Transform series data to match the expected nav item format
+	const navItems = seriesNames.map((series) => ({
+		name: series.seriesTitle,
+		link: `/category/${series.seriesSlug}`,
+	}));
+
+	// Add a home link at the beginning
+	const allNavItems = [{ name: 'Home', link: '/' }, ...navItems];
 
 	return (
 		<motion.div
@@ -25,27 +34,29 @@ export default function Index({
 			exit="exit"
 			className={styles.menu}
 		>
-			<div className={styles.body}>
+			<div className={cn('p-10', styles.body)}>
 				<div className={styles.nav}>
 					<div className={cn('text-neutral-200', styles.header)}>
 						<p>Navigation</p>
 					</div>
-					{navItems.map((data, index) => {
-						return (
-							<Link
-								setIsActive={setIsActive}
-								key={index}
-								data={{ ...data, index }}
-								isActive={selectedIndicator == data.link}
-								setSelectedIndicator={setSelectedIndicator}
-							></Link>
-						);
-					})}
+					<div className="scrollbar-hide flex max-h-[500px] flex-col gap-8 overflow-y-auto px-8 md:max-h-[400px] md:max-w-[400px] ">
+						{allNavItems.map((data, index) => {
+							return (
+								<Link
+									setIsActive={setIsActive}
+									key={index}
+									data={{ ...data, index }}
+									isActive={selectedIndicator == data.link}
+									setSelectedIndicator={setSelectedIndicator}
+								></Link>
+							);
+						})}
+					</div>
 				</div>
 				{/* <Footer /> */}
-				<div className="flex flex-col w-fit  gap-4">
-					<Image src={'/logo.svg'} alt="logo" width={150} height={150} />
-					<SocialIcons />
+				<div className="flex  flex-col items-center justify-center  gap-4">
+					<Image src={'/wordmarkwhite.svg'} alt="logo" width={150} height={150} />
+					{/* <SocialIcons /> */}
 				</div>
 			</div>
 			<Curve />

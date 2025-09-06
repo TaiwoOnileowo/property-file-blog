@@ -81,11 +81,11 @@ export default function CategoryPostsGrid({ posts, seriesTitle }: CategoryPostsG
 				))}
 			</div>
 
-			<div className="mt-8 text-center">
+			{/* <div className="mt-8 text-center">
 				<Button variant="default" asChild className="text-white transition hover:shadow-lg">
 					<Link href={`/category/${seriesTitle.toLowerCase()}`}>View More From {seriesTitle} </Link>
 				</Button>
-			</div>
+			</div> */}
 		</section>
 	);
 }

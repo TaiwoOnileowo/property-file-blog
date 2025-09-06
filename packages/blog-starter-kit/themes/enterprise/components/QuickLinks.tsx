@@ -2,8 +2,9 @@
 
 import { PostFragment } from '@/generated/graphql';
 import { cn } from '@/lib/utils';
+import { useSeriesStore } from '@/store/seriesStore';
 import { PostSeries } from '@/types';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { HoveredLink, Menu, MenuItem, ProductItem } from './ui/navbar-menu';
 
 interface QuickLinksProps {
@@ -13,6 +14,14 @@ interface QuickLinksProps {
 
 const QuickLinks = ({ seriesNames, postSeries = [] }: QuickLinksProps) => {
 	const [active, setActive] = useState<string | null>(null);
+	const { setSeriesNames } = useSeriesStore();
+
+	// Set series names in the store when data is received
+	useEffect(() => {
+		if (seriesNames && seriesNames.length > 0) {
+			setSeriesNames(seriesNames);
+		}
+	}, [seriesNames, setSeriesNames]);
 
 	const getSeriesPosts = (seriesSlug: string): PostFragment[] => {
 		const series = postSeries.find((s) => s.seriesSlug === seriesSlug);
@@ -43,7 +52,7 @@ const QuickLinks = ({ seriesNames, postSeries = [] }: QuickLinksProps) => {
 	}
 
 	return (
-		<div className="relative flex w-full items-center justify-center">
+		<div className="relative flex w-full items-center justify-center max-md:hidden">
 			<div className={cn('inset-x-0 z-10 mx-auto max-w-7xl')}>
 				<Menu setActive={setActive}>
 					{seriesWithPosts.map((series) => (

@@ -56,7 +56,7 @@ export default function Index({ postSeries, publication, seriesNames }: Props) {
 					<MetaTags publication={publication} />
 				</Head>
 				<Container className="mx-auto flex max-w-7xl flex-col items-stretch gap-10 px-5 pb-10">
-					<div className="mt-8 flex  w-full justify-center">
+					{/* <div className="mt-8 flex  w-full justify-center">
 						<DefaultInput
 							type="text"
 							placeholder="Search posts..."
@@ -64,7 +64,7 @@ export default function Index({ postSeries, publication, seriesNames }: Props) {
 							className=" max-w-md bg-gray-200"
 							btnClassName="bg-black hover:bg-gray-800 text-white"
 						/>
-					</div>
+					</div> */}
 					{postSeries.length === 0 && <EmptyBlog />}
 					{/* Latest Posts Section */}
 					<LatestPostsGrid posts={latestPosts} />

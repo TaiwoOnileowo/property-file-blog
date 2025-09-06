@@ -18,7 +18,7 @@ export default function LatestPostsGrid({ posts }: LatestPostsGridProps) {
 
 	return (
 		<section className="my-12 mt-0">
-			<h2 className="font-h font-heliosBold mb-6 text-center text-2xl">LATEST POSTS</h2>
+			{/* <h2 className="font-h font-heliosBold mb-6 text-center text-2xl">LATEST POSTS</h2> */}
 
 			<div className="grid grid-cols-12 gap-4  ">
 				{/* Main featured post - spans 6 columns */}

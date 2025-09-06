@@ -33,7 +33,11 @@ export default function Index({
 				animate={isActive ? 'open' : 'closed'}
 				className={styles.indicator}
 			></motion.div>
-			<Link href={link} onClick={() => setIsActive(false)}>
+			<Link
+				href={link}
+				className="break-words text-lg max-md:text-sm"
+				onClick={() => setIsActive(false)}
+			>
 				{name}
 			</Link>
 		</motion.div>
