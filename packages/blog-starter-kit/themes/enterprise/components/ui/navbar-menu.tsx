@@ -38,7 +38,7 @@ export const MenuItem = ({
 				<motion.div
 					initial={{ opacity: 0, scale: 0.85, y: 10 }}
 					animate={{ opacity: 1, scale: 1, y: 0 }}
-					transition={transition}
+					transition={transition as any}
 				>
 					{active === item && (
 						<div
@@ -50,7 +50,7 @@ export const MenuItem = ({
 							}}
 						>
 							<motion.div
-								transition={transition}
+								transition={transition as any}
 								layoutId="active"
 								className="overflow-hidden rounded-2xl border border-black/[0.2] bg-white shadow-xl backdrop-blur-sm dark:border-white/[0.2] dark:bg-black"
 							>
