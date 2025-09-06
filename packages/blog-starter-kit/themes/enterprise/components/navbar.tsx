@@ -13,7 +13,7 @@ export default function Navbar() {
 			<div className="container mx-auto w-full">
 				{/* Top navbar with logo and actions */}
 				<div className="mb-4 flex h-20 items-center justify-between border-b border-b-black/30 px-6">
-					<div className="absolute left-6 top-4 md:hidden">
+					<div className="absolute left-6 top-4 ">
 						<Header />
 					</div>
 					<Link href="/" className=" flex flex-1 items-center justify-center ">
@@ -24,16 +24,6 @@ export default function Navbar() {
 								height={100}
 								width={180}
 							/>
-						</div>
-					</Link>
-
-					<div className="absolute left-6 top-4 hidden md:block">
-						<Header />
-					</div>
-
-					<Link href="/" className=" hidden flex-1 items-center justify-center lg:flex">
-						<div className="flex items-center gap-1">
-							<Image src={'/wordmarkblack.svg'} alt="Property File" height={100} width={180} />
 						</div>
 					</Link>
 
