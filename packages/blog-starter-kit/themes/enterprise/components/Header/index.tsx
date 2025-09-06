@@ -46,7 +46,7 @@ export default function Index() {
 		<>
 			<div className={styles.headerButtonContainer}>
 				<Rounded
-					backgroundColor="#00bf63"
+					backgroundColor="#36454F"
 					onClick={() => {
 						setIsActive(!isActive);
 					}}

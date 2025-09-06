@@ -13,8 +13,9 @@ module.exports = {
 				success: '#0070f3',
 				cyan: '#79FFE1',
 				// primary: colors.blue,
-				primary: '#00bf63',
-				default: '#00bf63',
+				primary: '#36454F',
+				default: '#36454F',
+				charcoal: '#36454F',
 			},
 			typography: () => ({
 				DEFAULT: {

@@ -14,7 +14,7 @@ export const Layout = ({ children }: Props) => {
 		<>
 			<Meta />
 			<Scripts />
-			<div className="min-h-screen bg-[linear-gradient(to_bottom,#fff,#f1fff1)] ">
+			<div className="min-h-screen bg-white ">
 				<Navbar />
 				<main>{children}</main>
 				<Footer />

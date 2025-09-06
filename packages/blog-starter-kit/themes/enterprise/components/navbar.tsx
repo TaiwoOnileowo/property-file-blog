@@ -4,6 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useMediaQuery } from 'react-responsive';
 import Header from './Header';
+import SubscribeButton from './SubscribeButton';
 export default function Navbar() {
 	const mobileQuery = useMediaQuery({ query: '(max-width: 768px)' });
 	const isMobile = mobileQuery;
@@ -12,7 +13,7 @@ export default function Navbar() {
 		<header className="font-helios sticky top-0 z-50 w-full bg-white">
 			<div className="container mx-auto w-full">
 				{/* Top navbar with logo and actions */}
-				<div className="mb-4 flex h-20 items-center justify-between border-b border-b-black/30 px-6">
+				<div className="flex h-20 items-center justify-between border-b border-b-black/30 px-6">
 					<div className="absolute left-6 top-4 ">
 						<Header />
 					</div>
@@ -27,14 +28,9 @@ export default function Navbar() {
 						</div>
 					</Link>
 
-					{/* <div className="absolute right-6 top-4 flex items-center space-x-4 text-sm text-white">
-						<Button
-							variant="default"
-							className="cursor-pointer bg-black px-4 font-bold hover:bg-gray-800  "
-						>
-							Advertise
-						</Button>
-					</div> */}
+					<div className="absolute right-6 top-4 flex items-center space-x-4 text-sm text-white max-md:hidden">
+						<SubscribeButton />
+					</div>
 				</div>
 			</div>
 		</header>

@@ -1,9 +1,9 @@
 import CategoryPostsGrid from '@/components/CategoryPostsGrid';
-import DefaultInput from '@/components/DefaultInput';
 import EmptyBlog from '@/components/EmptyBlog';
 import LatestPostsGrid from '@/components/LatestPostsGrid';
 import MetaTags from '@/components/MetaTags';
 import QuickLinks from '@/components/QuickLinks';
+import SubscribePrompt from '@/components/SubscribePrompt';
 import { GET_SERIES_NAMES, GET_SERIES_WITH_POSTS } from '@/queries';
 import { PostSeries } from '@/types';
 import { getLatestPosts } from '@/utils';
@@ -51,6 +51,7 @@ export default function Index({ postSeries, publication, seriesNames }: Props) {
 	return (
 		<AppProvider publication={publication}>
 			<Layout>
+				<SubscribePrompt />
 				<QuickLinks seriesNames={seriesNames} postSeries={postSeries} />
 				<Head>
 					<MetaTags publication={publication} />
